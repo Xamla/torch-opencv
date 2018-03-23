@@ -13,6 +13,11 @@ struct decomposeHomographyMatRetval {
    struct TensorArray rotations, translations, normals;
 };
 
+struct TensorArrayPlusRectArray {
+    struct TensorArray tensors;
+    struct RectArray rects;
+};
+
 struct TensorArrayPlusRectArrayPlusFloat {
     struct TensorArray tensors;
     struct RectArray rects;
@@ -683,7 +688,8 @@ function cv.recoverPose(t)
     local result = C.recoverPose(
 			cv.wrap_tensor(E), cv.wrap_tensor(points1),
 			cv.wrap_tensor(points2), cv.wrap_tensor(R),
-			cv.wrap_tensor(t), focal, Point2d, cv.wrap_tensor(mask))
+			--cv.wrap_tensor(t), focal, Point2d, cv.wrap_tensor(mask))
+			cv.wrap_tensor(t), focal, Point2d, mask)
     return result.val, cv.unwrap_tensors(result.tensors)
 end
 
